@@ -1,0 +1,4 @@
+apifairy
+flask-sqlalchemy
+flask-cors
+marshmallow-sqlalchemy
