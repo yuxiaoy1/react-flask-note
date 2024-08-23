@@ -1,6 +1,5 @@
 from flask import Flask, redirect, url_for
 
-from app import models
 from app.blueprints.command import command
 from app.blueprints.error import error
 from app.blueprints.note import note
@@ -17,7 +16,6 @@ def create_app():
 
     register_extensions(app)
     register_blueprints(app)
-    register_shell_context(app)
 
     @app.get("/")
     def index():
@@ -39,14 +37,3 @@ def register_extensions(app):
     ma.init_app(app)
     cors.init_app(app)
     db.init_app(app)
-
-
-def register_shell_context(app):
-    @app.shell_context_processor
-    def shell_context():
-        ctx = {"db": db}
-        for attr in dir(models):
-            model = getattr(models, attr)
-            if hasattr(model, "__bases__") and db.Model in getattr(model, "__bases__"):
-                ctx[attr] = model
-        return ctx
